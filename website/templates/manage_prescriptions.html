@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Manage Prescriptions</h1>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            Prescriptions
+        </div>
+        <div class="card-body">
+            {% if prescriptions %}
+                <ul class="list-group">
+                    {% for prescription in prescriptions %}
+                        <li class="list-group-item">
+                            <strong>Prescription Date:</strong> {{ prescription.prescription_date.strftime('%Y-%m-%d') }}
+                            - Patient: {{ prescription.patient.patient_first_name }} {{ prescription.patient.patient_last_name }}
+                            - Medicine: {{ prescription.medicine.med_name }}
+                            - Dose: {{ prescription.dose }}
+                            <form action="{{ url_for('hospital_official.delete_prescription', prescription_id=prescription.id) }}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                            <a href="{{ url_for('hospital_official.edit_prescription', prescription_id=prescription.id) }}" class="btn btn-primary btn-sm">Edit</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No prescriptions found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            Add New Prescription
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('hospital_official.manage_prescriptions') }}" method="post">
+                <div class="form-group">
+                    <label for="patient_id">Patient</label>
+                    <select class="form-control" id="patient_id" name="patient_id" required>
+                        {% for patient in patients %}
+                            <option value="{{ patient.patient_id }}">{{ patient.patient_first_name }} {{ patient.patient_last_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="med_code">Medicine</label>
+                    <select class="form-control" id="med_code" name="med_code" required>
+                        {% for medicine in medicines %}
+                            <option value="{{ medicine.med_code }}">{{ medicine.med_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="prescription_date">Prescription Date</label>
+                    <input type="date" class="form-control" id="prescription_date" name="prescription_date" required>
+                </div>
+                <div class="form-group">
+                    <label for="dose">Dose</label>
+                    <input type="text" class="form-control" id="dose" name="dose" required>
+                </div>
+                <div class="form-group">
+                    <label for="app_id">Appointment</label>
+                    <select class="form-control" id="app_id" name="app_id" required>
+                        {% for appointment in appointments %}
+                            <option value="{{ appointment.id }}">{{ appointment.app_date.strftime('%Y-%m-%d') }} - Patient: {{ appointment.patient.patient_first_name }} {{ appointment.patient.patient_last_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success">Add Prescription</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

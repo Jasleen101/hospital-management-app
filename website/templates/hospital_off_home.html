@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Welcome, {{ user.user_first_name }}!</h1>
+    <p>This is the hospital official's home page.</p>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            Upcoming Appointments
+        </div>
+        <div class="card-body">
+            {% if upcoming_appointments %}
+                <ul class="list-group">
+                    {% for appointment in upcoming_appointments %}
+                        <li class="list-group-item">
+                            <strong>{{ appointment.app_date.strftime('%Y-%m-%d') }}</strong> - Patient: {{ appointment.patient.patient_first_name }} {{ appointment.patient.patient_last_name }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No upcoming appointments.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">View Patient Data</h5>
+                    <p class="card-text">Access and review patient records.</p>
+                    <a href="{{ url_for('hospital_official.view_patient_data') }}" class="btn btn-primary">View Patient Data</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Book Appointments</h5>
+                    <p class="card-text">Update or edit existing patient appointments.</p>
+                    <a href="{{ url_for('appointments.view_appointments') }}" class="btn btn-warning">Update/Edit Appointments Data</a>
+                </div>
+            </div>
+        </div>
+        {% if user.user_role == 'hospital_off' or user.user_role == 'admin' or user.user_role == 'User' %}
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Generate Excel Report</h5>
+                    <p class="card-text">Generate a detailed report on patient data.</p>
+                    <form action="{{ url_for('views.generate_excel_report') }}" method="get">
+                        <button type="submit" class="btn btn-success btn-block">Generate Excel Report</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Manage Prescriptions</h5>
+                    <p class="card-text">Prescribe and manage patient medications.</p>
+                    <a href="{{ url_for('hospital_official.manage_prescriptions') }}" class="btn btn-info">Manage Prescriptions</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Add Medicine</h5>
+                    <p class="card-text">Add new medicines to the database.</p>
+                    <a href="{{ url_for('hospital_official.add_medicine') }}" class="btn btn-secondary">Add Medicine</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Add Department</h5>
+                    <p class="card-text">Add a new department to the hospital.</p>
+                    <a href="{{ url_for('department.view_departments') }}" class="btn btn-success">Add Department</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

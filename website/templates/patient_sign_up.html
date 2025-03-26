@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Patient Sign Up</h2>
+<form action="{{ url_for('auth.signup_patient') }}" method="POST">
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email" required><br>
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password" required><br>
+    <label for="first_name">First Name:</label><br>
+    <input type="text" id="first_name" name="first_name" required><br>
+    <label for="last_name">Last Name:</label><br>
+    <input type="text" id="last_name" name="last_name" required><br>
+    <label for="telephone">Telephone:</label><br>
+    <input type="tel" id="telephone" name="telephone" required><br>
+    <label for="dob">Date of Birth:</label><br>
+    <input type="date" id="dob" name="dob" required><br>
+    <label for="medical_history">Medical History:</label><br>
+    <textarea id="medical_history" name="medical_history" required></textarea><br>
+    <input type="submit" value="Sign Up">
+</form>
+{% endblock %}

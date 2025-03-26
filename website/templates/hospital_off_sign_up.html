@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Hospital Official Sign Up</h2>
+<form method="POST" action="{{ url_for('auth.signup_official') }}">
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" required>
+    
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" required>
+    
+    <label for="first_name">First Name:</label>
+    <input type="text" name="first_name" id="first_name" required>
+    
+    <label for="last_name">Last Name:</label>
+    <input type="text" name="last_name" id="last_name" required>
+    
+    <label for="telephone">Telephone:</label>
+    <input type="text" name="telephone" id="telephone" required>
+    
+    <button type="submit">Sign Up</button>
+</form>
+{% endblock %}

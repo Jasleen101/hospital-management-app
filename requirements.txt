@@ -1,0 +1,10 @@
+flask
+flask-login
+Flask-Bcrypt 
+Flask-WTF 
+FLask-Migrate 
+Flask-SQLAlchemy 
+pyotp 
+qrcode 
+python-decouple
+pandas

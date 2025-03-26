@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Sign Up</h2>
+<form method="POST" action="{{ url_for('auth.signup') }}">
+    <label for="user_type">I am a:</label>
+    <select name="user_type" id="user_type">
+        <option value="hospital_official">Hospital Official</option>
+        <option value="patient">Patient</option>
+    </select>
+    <button type="submit">Next</button>
+</form>
+{% endblock %}
+

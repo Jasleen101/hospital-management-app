@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Manage Medicines</h1>
+    <p>Here you can view, add, and edit medicines.</p>
+
+    <!-- Add Medicine Form -->
+    <form method="POST" class="mb-4">
+        <h2>Add New Medicine</h2>
+        <div class="form-row">
+            <div class="col">
+                <input type="text" name="med_name" class="form-control" placeholder="Medicine Name" required>
+            </div>
+            <div class="col">
+                <input type="text" name="description" class="form-control" placeholder="Description" required>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-success" name="add_medicine">Add Medicine</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Medicine Table -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for medicine in medicines %}
+            <tr>
+                <td>{{ medicine.med_code }}</td>
+                <td>{{ medicine.med_name }}</td>
+                <td>{{ medicine.description }}</td>
+                <td>
+                    <!-- Edit Form -->
+                    <form method="POST" action="{{ url_for('hospital_official.add_medicine') }}" class="form-inline">
+                        <input type="hidden" name="med_code" value="{{ medicine.med_code }}">
+                        <input type="text" name="med_name" class="form-control mr-2" value="{{ medicine.med_name }}" required>
+                        <input type="text" name="description" class="form-control mr-2" value="{{ medicine.description }}" required>
+                        <button type="submit" class="btn btn-warning" name="edit_medicine">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

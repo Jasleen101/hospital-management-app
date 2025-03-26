@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Appointments</h1>
+    <p>Here you can view, add, edit, and search appointment records.</p>
+
+    <!-- Search Form -->
+    <form method="POST" class="form-inline mb-4">
+        <input type="text" name="search" class="form-control mr-2" placeholder="Search by name">
+        <button type="submit" class="btn btn-primary" name="search_button">Search</button>
+        <a href="{{ url_for('appointments.view_appointments') }}" class="btn btn-secondary ml-2">Reset</a>
+    </form>
+
+    <!-- Add Appointment Form -->
+    <form method="POST" class="mb-4">
+        <h2>Book New Appointment</h2>
+        <div class="form-row">
+            <div class="col">
+                <select name="patient_id" class="form-control" required>
+                    <option value="" disabled selected>Select Patient</option>
+                    {% for patient in patients %}
+                        <option value="{{ patient.patient_id }}">{{ patient.patient_first_name }} {{ patient.patient_last_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <select name="hospital_off_id" class="form-control" required>
+                    <option value="" disabled selected>Select Hospital Official</option>
+                    {% for official in officials %}
+                        <option value="{{ official.id }}">{{ official.user.user_first_name }} {{ official.user.user_last_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <input type="date" name="app_date" class="form-control" required>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-success" name="add_appointment">Book Appointment</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Appointments Table -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Patient Name</th>
+                <th>Hospital Official</th>
+                <th>Appointment Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.app_id }}</td>
+                <td>{{ appointment.patient.patient_first_name }} {{ appointment.patient.patient_last_name }}</td>
+                <td>{{ appointment.hospital_official.user.user_first_name }} {{ appointment.hospital_official.user.user_last_name }}</td>
+                <td>{{ appointment.app_date }}</td>
+                <td>
+                    <!-- Edit Form -->
+                    <form method="POST" class="form-inline">
+                        <input type="hidden" name="app_id" value="{{ appointment.app_id }}">
+                        <div class="form-row">
+                            <div class="col">
+                                <select name="patient_id" class="form-control" required>
+                                    {% for patient in patients %}
+                                        <option value="{{ patient.patient_id }}" {% if appointment.patient_id == patient.patient_id %} selected {% endif %}>
+                                            {{ patient.patient_first_name }} {{ patient.patient_last_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select name="hospital_off_id" class="form-control" required>
+                                    {% for official in officials %}
+                                        <option value="{{ official.id }}" {% if appointment.hospital_off_id == official.id %} selected {% endif %}>
+                                            {{ official.user.user_first_name }} {{ official.user.user_last_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col">
+                                <input type="date" name="app_date" class="form-control" value="{{ appointment.app_date }}" required>
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-warning" name="edit_appointment">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

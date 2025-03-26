@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Patient Data</h1>
+    <p>Here you can view, add, edit, and search patient records.</p>
+
+    <!-- Search Form -->
+    <form method="POST" class="form-inline mb-4">
+        <input type="text" name="search" class="form-control mr-2" placeholder="Search by name">
+        <button type="submit" class="btn btn-primary" name="search_button">Search</button>
+        <a href="{{ url_for('hospital_official.view_patient_data') }}" class="btn btn-secondary ml-2">Reset</a>
+    </form>
+
+    <!-- Add Patient Form -->
+    <form method="POST" class="mb-4">
+        <h2>Add New Patient</h2>
+        <div class="form-row">
+            <div class="col">
+                <input type="text" name="first_name" class="form-control" placeholder="First Name" required>
+            </div>
+            <div class="col">
+                <input type="text" name="last_name" class="form-control" placeholder="Last Name" required>
+            </div>
+            <div class="col">
+                <input type="text" name="telephone" class="form-control" placeholder="Telephone" required>
+            </div>
+            <div class="col">
+                <input type="text" name="address" class="form-control" placeholder="Address" required>
+            </div>
+            <div class="col">
+                <input type="date" name="dob" class="form-control" placeholder="Date of Birth" required>
+            </div>
+            <div class="col">
+                <input type="number" name="insurance" class="form-control" placeholder="Insurance" required>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-success" name="add_patient">Add Patient</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Patient Table -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Telephone</th>
+                <th>Address</th>
+                <th>Date of Birth</th>
+                <th>Insurance</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for patient in patients %}
+            <tr>
+                <td>{{ patient.patient_id }}</td>
+                <td>{{ patient.patient_first_name }}</td>
+                <td>{{ patient.patient_last_name }}</td>
+                <td>{{ patient.patient_telephone }}</td>
+                <td>{{ patient.patient_address }}</td>
+                <td>{{ patient.patient_date }}</td>
+                <td>{{ patient.patient_insurance }}</td>
+                <td>
+                    <!-- Edit Form -->
+                    <form method="POST" action="{{ url_for('hospital_official.edit_patient_data', patient_id=patient.patient_id) }}" class="form-inline">
+                        <input type="text" name="first_name" class="form-control mr-2" value="{{ patient.patient_first_name }}" required>
+                        <input type="text" name="last_name" class="form-control mr-2" value="{{ patient.patient_last_name }}" required>
+                        <input type="text" name="telephone" class="form-control mr-2" value="{{ patient.patient_telephone }}" required>
+                        <input type="text" name="address" class="form-control mr-2" value="{{ patient.patient_address }}" required>
+                        <input type="date" name="dob" class="form-control mr-2" value="{{ patient.patient_date }}" required>
+                        <input type="number" name="insurance" class="form-control mr-2" value="{{ patient.patient_insurance }}" required>
+                        <button type="submit" class="btn btn-warning">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Generate Report Button -->
+    {% if user.user_role in ['hospital_off', 'admin', 'User'] %}
+    <div class="col-md-4">
+        <form action="{{ url_for('views.generate_excel_report') }}" method="get">
+            <button type="submit" class="btn btn-primary btn-block">Generate Excel Report</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

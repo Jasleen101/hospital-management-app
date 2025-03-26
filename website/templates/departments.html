@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Departments</h2>
+
+    <!-- Display existing departments -->
+    {% for department in departments %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <p>These are the existing departments.</p>
+            <h3>{{ department.department_name }}</h3>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Form to add new department -->
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Add New Department</h4>
+            <form method="POST" action="{{ url_for('department.view_departments') }}">
+                <div class="form-group">
+                    <label for="department_name">Department Name:</label>
+                    <input type="text" class="form-control" id="department_name" name="department_name" required>
+                </div>
+                <button type="submit" class="btn btn-primary" name="add_department">Add Department</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
